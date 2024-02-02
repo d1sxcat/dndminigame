@@ -1,20 +1,16 @@
-import { useRef } from 'react'
-import Draggable from 'react-draggable'
-import PlayArea from './components/PlayArea'
-import './App.css'
+import { GameDataProvider } from "./providers/GameContextProvider";
+import GameManager from "./components/GameManager";
+import "./App.css";
 
 function App() {
 
-  const ref = useRef<HTMLDivElement>(null)
   return (
     <>
-    <PlayArea >
-    <Draggable nodeRef={ref}>
-      <div className='text-slate-800 absolute' ref={ref}>Poop</div>
-    </Draggable>
-    </PlayArea>
+      <GameDataProvider>
+        <GameManager />
+      </GameDataProvider>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

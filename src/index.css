@@ -1,3 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body{
+    overflow: hidden;
+}
+
+@font-face {
+    font-family: 'Poppins';
+    src: local('Poppins-SemiBold'),
+      url('./assets/Poppins-SemiBold.ttf') format('truetype');
+    font-weight: 600;
+  }
