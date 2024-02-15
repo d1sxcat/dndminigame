@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from "react"
 import Draggable, { DraggableEvent, DraggableData } from "react-draggable"
 import { TDragData, TPostion } from "../types/types"
-import { useInterval } from "../hooks/useInterval"
+import { useAnimationFrame } from "../hooks/useInterval"
 import { useWindowResize } from "../hooks/useWindowResize"
 import Lottie from "react-lottie-player"
 import lottieJson from "../assets/lottie.json"
@@ -26,7 +26,7 @@ export default function DraggableDiv({
   index: number
   setDirectionOfDraggingDiv: React.Dispatch<React.SetStateAction<string | null>>
   setRound: (index: number) => void
-  handleScore: (win: boolean) => void
+  handleScore: (win: number) => void
 }) {
   const draggableRef = useRef<HTMLDivElement>(null)
   const windowSize = useWindowResize()
@@ -69,9 +69,9 @@ export default function DraggableDiv({
       setDirectionOfDraggingDiv(null)
       if (!isFinished) {
         if (directionofDiv === correctDirection) {
-          handleScore(true)
+          handleScore(1)
         } else {
-          handleScore(false)
+          handleScore(0)
         }
       }
       setIsFinished(true)
@@ -82,13 +82,14 @@ export default function DraggableDiv({
     }
   }
 
-  useInterval(
-    () => {
+  useAnimationFrame(
+    (deltaTime:number) => {
       setPosition((prev) => {
-        return { ...prev, y: prev.y + 20 }
+        return { ...prev, y: (prev.y + deltaTime) }
       })
-    },
-    !isFinished ? 400 : null
+    }
+    ,!isFinished ? 400 : null
+    ,20
   )
 
   useEffect(() => {
@@ -106,7 +107,7 @@ export default function DraggableDiv({
     }
     if (position.y >= windowSize.windowHeight - height / 2) {
       if (!isFinished) {
-        handleScore(false)
+        handleScore(2)
       }
       setIsFinished(true)
     }

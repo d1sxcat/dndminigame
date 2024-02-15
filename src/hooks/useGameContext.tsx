@@ -33,6 +33,12 @@ export function useGameContext() {
     }
   }
 
+  const postBin = () => {
+    if (portRef.current) {
+      portRef.current.postMessage({ type: "bin", message: "add" })
+    }
+  }
+
   useEffect(() => {
     if(portRef.current) return
     //I hate doing this but it's the only way to ensure the postMessage is sent after the storyline script has ran.. Must be a better way...
@@ -64,5 +70,6 @@ export function useGameContext() {
     setGameData,
     postScore,
     postEnd,
+    postBin
   }
 }

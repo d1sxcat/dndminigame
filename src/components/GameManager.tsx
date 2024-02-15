@@ -4,7 +4,7 @@ import DraggableDiv from "./DraggingDiv"
 import PlayArea from "./PlayArea"
 
 export default function GameManager() {
-  const { gameData, postScore, postEnd } = useGameContext()
+  const { gameData, postScore, postEnd, postBin } = useGameContext()
   const [directionOfDraggingDiv, setDirectionOfDraggingDiv] = useState<string | null>(null)
   const [round, setRound] = useState<number>(0)
 
@@ -13,15 +13,19 @@ export default function GameManager() {
     setRound((prev) => (prev <= index ? prev + 1 : prev))
   }
 
-  const handleScore = (won: boolean) => {
-    postScore(won)
-    if(!gameData) return
+  const handleScore = (won: number) => {
+    if(won < 2) {
+      const bool:boolean = won === 0 ? false : true
+      postScore(bool)
+      return
+    }
+    postBin()
   }
 
   useEffect(() => {
     if(!gameData) return
     if (round === gameData.Divs.length){
-        setInterval(() => {
+        setTimeout(() => {
             postEnd()
         },200)
     }
